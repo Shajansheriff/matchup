@@ -1,12 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Items } from "./types";
-
-type QuestionId = string;
-type AnswerId = string;
-type Current = [QuestionId | null, AnswerId | null];
-type Answer = [QuestionId, AnswerId];
-type Answers = Answer[];
-type QueryStatus = "idle" | "fetching" | "success" | "error";
+import { Answer, Current, Items, QueryStatus } from "./types";
 
 export const useGameBoard = ({
   queryFn,
@@ -23,15 +16,8 @@ export const useGameBoard = ({
     datalist?.forEach((item) => {
       map.set(item.setup, item.punchline);
     });
-
     return map;
   }, [datalist]);
-
-  const userAtoQMap = new Map(
-    Array.from(userAnswers.entries(), (entry) => {
-      return [...entry].reverse() as Answer;
-    })
-  );
 
   const pushQuestion = (qn: string) => {
     setCurrent((prev) => {
@@ -99,7 +85,6 @@ export const useGameBoard = ({
     pushQuestion,
     pushAnswer,
     userAnswers,
-    userAtoQMap,
     reset,
     undo,
     newGame,
