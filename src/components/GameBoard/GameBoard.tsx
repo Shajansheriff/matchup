@@ -10,6 +10,7 @@ import { Arrows } from "./Arrows";
 import { Result } from "./Result";
 import { QuestionList } from "./QuestionList";
 import { AnswerList } from "./AnswerList";
+import { HelpButton } from "./HelpButton";
 
 async function getData(): Promise<Items> {
   const res = await fetch("https://official-joke-api.appspot.com/jokes/ten");
@@ -46,9 +47,7 @@ export const GameBoard = () => {
       return (
         <div className="flex flex-col gap-8">
           <div className="flex justify-end gap-1.5">
-            <ActionButton tooltipText="Help" variant="ghost">
-              <HelpCircle className="w-4 h-4" />
-            </ActionButton>
+            <HelpButton />
             {!isGameOver && (
               <ActionButton
                 tooltipText="Undo"
