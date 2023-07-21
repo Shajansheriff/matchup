@@ -44,8 +44,6 @@ export const List: React.FunctionComponent<Props> = ({ data, children }) => {
   return <ul className="space-y-3 flex flex-col">{children(data)}</ul>;
 };
 
-type WithShuffle = <T>(component: ComponentType<T>) => ReactElement;
-
 export function withShuffle<T>(Component: ComponentType<Props>) {
   return function WithShuffled({ data, ...props }: Props) {
     const [items] = useState(() => shuffle(data));
