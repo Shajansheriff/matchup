@@ -52,9 +52,9 @@ export const GameBoard = () => {
 
   switch (status) {
     case "error":
-      return <div className="text-4xl">Error...</div>;
+      return <div className="text-4xl text-center">Error...</div>;
     case "fetching":
-      return <div className="text-4xl">Loading...</div>;
+      return <div className="text-4xl text-center">Loading...</div>;
     case "success":
       return (
         <div className="flex flex-col gap-8">
@@ -227,7 +227,7 @@ export const GameBoard = () => {
     case "idle":
     default:
       return (
-        <div className="grid place-items-center">
+        <div className="grid place-content-center h-40 border p-8 border-dashed">
           <Button size="lg" onClick={newGame}>
             Start Game
           </Button>
