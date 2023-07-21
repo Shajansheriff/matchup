@@ -1,4 +1,4 @@
-import { GameBoard, Item, Items } from "@/components/GameBoard";
+import { GameBoard } from "@/components/GameBoard";
 
 export default async function Home() {
   return (
