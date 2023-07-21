@@ -37,7 +37,6 @@ export const GameBoard = () => {
     status,
     datalist,
     answerMap,
-    runQueryFn,
     current,
     userAnswers,
     pushQuestion,
@@ -46,6 +45,7 @@ export const GameBoard = () => {
     userAtoQMap,
     reset,
     undo,
+    newGame,
   } = useGameBoard({ queryFn: getData });
 
   const isGameOver = userAnswers.length === answerMap.size;
@@ -102,7 +102,7 @@ export const GameBoard = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button onClick={runQueryFn}>
+                  <Button onClick={newGame}>
                     <Rocket className="w-4 h-4" />
                   </Button>
                 </TooltipTrigger>
@@ -199,8 +199,8 @@ export const GameBoard = () => {
                       <div className="font-base font-medium">{item.setup}</div>
                       <div className="flex justify-center text-sm">
                         {isAnswerCorrect ? (
-                          <div>
-                            <CheckCircle className="w-4 h-4 mr-1 text-green-600" />
+                          <div className="flex items-center">
+                            <CheckCircle className="w-4 h-4 mr-1.5 text-green-600" />
                             {userAnswer}
                           </div>
                         ) : (
@@ -228,7 +228,7 @@ export const GameBoard = () => {
     default:
       return (
         <div className="grid place-items-center">
-          <Button size="lg" onClick={() => runQueryFn()}>
+          <Button size="lg" onClick={newGame}>
             Start Game
           </Button>
         </div>

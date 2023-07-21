@@ -94,6 +94,11 @@ export const useGameBoard = ({
       });
   };
 
+  const newGame = () => {
+    reset();
+    runQueryFn();
+  };
+
   return {
     status: queryStatus,
     datalist,
@@ -109,5 +114,6 @@ export const useGameBoard = ({
     userAtoQMap,
     reset,
     undo,
+    newGame,
   };
 };
