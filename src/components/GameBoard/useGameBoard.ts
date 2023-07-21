@@ -16,7 +16,7 @@ export const useGameBoard = ({
   const [queryStatus, setQueryStatus] = useState<QueryStatus>("idle");
   const [datalist, setDatalist] = useState<Items>();
   const [current, setCurrent] = useState<Current>([null, null]);
-  const [userAnswers, setUserAnswers] = useState<Answers>([]);
+  const [userAnswers, setUserAnswers] = useState(new Map<string, string>());
 
   const answerMap = useMemo(() => {
     const map = new Map<string, string>();
@@ -27,15 +27,11 @@ export const useGameBoard = ({
     return map;
   }, [datalist]);
 
-  const userQtoAMap = useMemo(() => {
-    return new Map([...userAnswers]);
-  }, [userAnswers]);
-
-  const userAtoQMap = useMemo(() => {
-    return new Map(
-      [...userAnswers].map((entry) => [...entry].reverse() as Answer)
-    );
-  }, [userAnswers]);
+  const userAtoQMap = new Map(
+    Array.from(userAnswers.entries(), (entry) => {
+      return [...entry].reverse() as Answer;
+    })
+  );
 
   const pushQuestion = (qn: string) => {
     setCurrent((prev) => {
@@ -54,31 +50,26 @@ export const useGameBoard = ({
   useEffect(() => {
     const [question, answer] = current;
     if (question && answer) {
-      setUserAnswers((prev) => [...prev, [question, answer]]);
+      setUserAnswers((prev) => prev.set(question, answer));
       setCurrent(() => [null, null]);
     }
   }, [current]);
 
-  const getAnswerValue = (answerId: string) => {
-    const questionId = userAtoQMap.get(answerId);
-    return questionId && [questionId, answerId];
-  };
-
-  const getQuestion = (questionId: string) => {
-    const answerId = userQtoAMap.get(questionId);
-    return answerId && [questionId, answerId];
-  };
-
   const reset = () => {
-    setUserAnswers([]);
+    setUserAnswers((prev) => {
+      prev.clear();
+      return prev;
+    });
     setCurrent([null, null]);
   };
 
   const undo = () => {
     setUserAnswers((prev) => {
-      const temp = [...prev];
-      temp.pop();
-      return temp;
+      const last = Array.from(prev.keys()).at(-1);
+      if (last) {
+        prev.delete(last);
+      }
+      return prev;
     });
   };
 
@@ -108,9 +99,6 @@ export const useGameBoard = ({
     pushQuestion,
     pushAnswer,
     userAnswers,
-    getAnswerValue,
-    getQuestion,
-    userQtoAMap,
     userAtoQMap,
     reset,
     undo,

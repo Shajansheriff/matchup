@@ -42,14 +42,13 @@ export const GameBoard = () => {
     userAnswers,
     pushQuestion,
     pushAnswer,
-    userQtoAMap,
     userAtoQMap,
     reset,
     undo,
     newGame,
   } = useGameBoard({ queryFn: getData });
 
-  const isGameOver = userAnswers.length === answerMap.size;
+  const isGameOver = userAnswers.size === answerMap.size;
 
   switch (status) {
     case "error":
@@ -66,7 +65,7 @@ export const GameBoard = () => {
             <ActionButton
               tooltipText="Undo"
               variant="outline"
-              disabled={userAnswers.length < 1}
+              disabled={userAnswers.size < 1}
               onClick={undo}
             >
               <Undo className="w-4 h-4" />
@@ -99,8 +98,8 @@ export const GameBoard = () => {
                               onCheckedChange={() => {
                                 pushQuestion(question);
                               }}
-                              disabled={userQtoAMap.has(question)}
-                              completed={userQtoAMap.has(question)}
+                              disabled={userAnswers.has(question)}
+                              completed={userAnswers.has(question)}
                             />
                           ))}
                         </React.Fragment>
@@ -136,30 +135,33 @@ export const GameBoard = () => {
                   </ShuffledList>
                 )}
               </div>
-              {userAnswers.map(([question, answer], index) => {
-                let color = colors[index];
+              {Array.from(
+                userAnswers.entries(),
+                ([question, answer], index) => {
+                  let color = colors[index];
 
-                if (answerMap.size === userAnswers.length) {
-                  const rightAnswer = answerMap.get(question);
+                  if (answerMap.size === userAnswers.size) {
+                    const rightAnswer = answerMap.get(question);
 
-                  color = rightAnswer === answer ? "green" : "red";
+                    color = rightAnswer === answer ? "green" : "red";
+                  }
+                  return (
+                    <Xarrow
+                      key={question}
+                      start={question}
+                      end={answer}
+                      curveness={1}
+                      color={color}
+                    />
+                  );
                 }
-                return (
-                  <Xarrow
-                    key={question}
-                    start={question}
-                    end={answer}
-                    curveness={1}
-                    color={color}
-                  />
-                );
-              })}
+              )}
             </>
           ) : (
             <div>
               <div className="border border-input p-6 rounded-md shadow divide-dashed divide-y ">
                 {datalist?.map((item) => {
-                  const userAnswer = userQtoAMap.get(item.setup);
+                  const userAnswer = userAnswers.get(item.setup);
                   const isAnswerCorrect = userAnswer === item.punchline;
                   return (
                     <div
