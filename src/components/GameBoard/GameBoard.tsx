@@ -21,6 +21,7 @@ import {
 import { useGameBoard } from "./useGameBoard";
 import { Items } from "./types";
 import React from "react";
+import { ActionButton } from "../ActionButton";
 
 async function getData(): Promise<Items> {
   const res = await fetch("https://official-joke-api.appspot.com/jokes/ten");
@@ -59,58 +60,27 @@ export const GameBoard = () => {
       return (
         <div className="flex flex-col gap-8">
           <div className="flex justify-end gap-1.5">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost">
-                    <HelpCircle className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Help</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    disabled={userAnswers.length < 1}
-                    onClick={undo}
-                  >
-                    <Undo className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Undo</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="secondary" onClick={reset}>
-                    <RotateCcw className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Reset</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button onClick={newGame}>
-                    <Rocket className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>New Game</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <ActionButton tooltipText="Help" variant="ghost">
+              <HelpCircle className="w-4 h-4" />
+            </ActionButton>
+            <ActionButton
+              tooltipText="Undo"
+              variant="outline"
+              disabled={userAnswers.length < 1}
+              onClick={undo}
+            >
+              <Undo className="w-4 h-4" />
+            </ActionButton>
+            <ActionButton
+              tooltipText="Reset"
+              variant="secondary"
+              onClick={reset}
+            >
+              <RotateCcw className="w-4 h-4" />
+            </ActionButton>
+            <ActionButton tooltipText="Help" onClick={newGame}>
+              <Rocket className="w-4 h-4" />
+            </ActionButton>
           </div>
           {!isGameOver ? (
             <>
